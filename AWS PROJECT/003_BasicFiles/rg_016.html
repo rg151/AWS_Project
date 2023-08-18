@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HTML Form</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="bootstrap.min.css" rel="stylesheet" />
+        <script src="bootstrap.bundle.min.js"></script>
+        <script src="jquery.min.js"></script>
+        <script>
+			
+           $(document).ready(function () {
+				//alert(111);
+				$("#shwBtn").click(function () {
+                    //alert(1);
+					
+					//Capture all form values in an array
+					values = jQuery("#my_form").serializeArray();
+                    /* Because serializeArray() ignores unset checkboxes and radio buttons: */
+                    // values = values.concat(
+                    //     jQuery("#myform input[type=checkbox]:not(:checked)")
+                    //         .map(function () {
+                    //             return { name: this.name, value: false };
+                    //         }).get()
+                    // );
+
+                    //formParamValues = JSON.stringify(values);
+					//alert(formParamValues);
+					
+					
+					
+					
+					// Add code for HTML-select explicitly
+					var cityValue = $('#city').find(":selected").val();					
+					var cityItem={"name":"city", "value":cityValue};					
+					values.push(cityItem);
+					
+					formParamValues = JSON.stringify(values);
+                    //alert(formParamValues);
+					//alert("sending by ajax")
+					
+					//===================================================
+					
+					$.ajax({
+						type: 'post',
+						url: "https://3i9sittiig.execute-api.us-east-1.amazonaws.com/default/rg_016_f2",
+						data: formParamValues,
+						xhrFields: {
+							withCredentials: false
+						},  
+						headers: {
+
+						}, 
+						success: function (data) {
+							alert('searching');
+							alert(data);
+							console.log(data);
+								$("#u_name").val(data["username"]);
+								$("#city").val(data["city"]);
+								$("#mobile").val(data["mobile"]);
+								$("#date").val(data["joining_date"]);
+								$("#fee").val(data["joining_fees"]);
+							// your business logic
+						},  
+						error: function () {
+							//console.log('We are sorry but our servers are having an issue right now');
+						}
+					})
+					//===================================================
+					
+				});
+		   });
+
+
+
+            
+        </script>
+
+<script>
+    $(document).ready(function(){
+      $("#shw").click(function(){
+        $.ajax({
+          url: "https://3i9sittiig.execute-api.us-east-1.amazonaws.com/default/rg_016_f2",
+          cache: false,
+          success: function(data){
+          //alert(response);
+          var data =JSON.stringify(Response)
+            alert(data);
+            console.log(data);
+           $("#u_name").val(data["username"]);
+            $("#city").val(data["city"]);
+            $("#mobile").val(data["mobile"]);
+            $("#date").val(data["joining_date"]);
+            $("#fee").val(data["joining_fees"]);
+          }
+        });
+      });
+    });
+</script>
+
+
+    </head>
+    <body>
+        <form name="my_form" id="my_form">
+            <!-- <p>First name: <input type="text" name="User Name" id="firstname"  /></p>
+            <p><label for="city">City:</label>
+                <select name="city" id="city" form="city">
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Pune">Pune</option>
+                   
+                </select></p> -->
+            <p>
+                <p>Username: <input type="text" name="username" id="username"  /></p>
+                <!-- <p>Joining Date: <input type="date" name="Joining Date" id="jdate"  /></p>
+                <p>Joining Fees: <input type="text" name="Joining Fees" id="fees"  /></p>
+                <br />
+                <br /> -->
+            </p>
+
+            <input id="shwBtn" type="button" value="Search" />
+        </form>
+
+
+        <input type="text" id="u_name" placeholder="Username">
+        <input type="text" id="city" placeholder="City">
+        <input type="text" id="mobile" placeholder="Mobile">
+        <input type="text" id="date" placeholder="Date">
+        <input type="text" id="fee" placeholder="Fee">
+                       
+        <button id="shw"  class="btn btn-primary">Show</button>
+                      
+    </body>
+</html>
+
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HTML Form</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="bootstrap.min.css" rel="stylesheet" />
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <style>
+        .form-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .save-button {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#shwBtn").click(function () {
+                var values = $("#my_form").serializeArray();
+                values = values.concat(
+                    $("#my_form input[type=checkbox]:not(:checked)")
+                        .map(function () {
+                            return { name: this.name, value: false };
+                        }).get()
+                );
+
+                var formParamValues = JSON.stringify(values);
+
+                $.ajax({
+                    type: 'post',
+                    url: "https://gksj2gagwc.execute-api.us-east-1.amazonaws.com/default/rg_016",
+                    data: formParamValues,
+                    xhrFields: {
+                        withCredentials: false
+                    },
+                    headers: {},
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        console.log('We are sorry but our servers are having an issue right now');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="form-box">
+                    <form action="#" name="my_form" id="my_form">
+                        <div class="mb-3">
+                            <label for="user_name" class="form-label">User Name:</label>
+                            <input type="text" class="form-control" id="user_name" name="user_name" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City:</label>
+                            <input type="text" class="form-control" id="city" name="city" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile" class="form-label">Mobile:</label>
+                            <input type="number" class="form-control" id="mobile" name="mobile" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="joining_date" class="form-label">Joining Date:</label>
+                            <input type="datetime" class="form-control" id="joining_date" name="joining_date" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="join_fees" class="form-label">Joining Fees:</label>
+                            <input type="number" class="form-control" id="join_fees" name="join_fees" >
+                        </div>
+
+                        <button id="shwBtn" class="button">Submit data</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
